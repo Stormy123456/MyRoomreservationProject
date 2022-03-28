@@ -1,0 +1,73 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+ <head>
+  <title>ระบบจองห้อง</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style type="text/css">
+    body {
+        overflow-x: hidden;
+        background: url("/static/image/srs-room.jpg") 50% 0 no-repeat fixed ;
+        background-size:cover;
+    }
+    .box{
+     width:600px;
+     margin:0 auto;
+     border:1px solid #ccc;
+     background:rgb(243, 232, 206);
+    }
+    .alert2 {
+          padding: 20px;
+          background-color: #ee3922;
+          color: white;
+        }
+        
+        .closebtn2 {
+          margin-left: 15px;
+          color: white;
+          font-weight: bold;
+          float: right;
+          font-size: 22px;
+          line-height: 20px;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+        
+        .closebtn2:hover {
+          color: black;
+        }
+   </style>
+ </head>
+ <body>
+  <br />
+  <div class="container box">
+   <h3 align="center">กรุณาเข้าสู่ระบบ</h3><br />
+   {% if messages %}
+    {% for message in messages %}
+     <div class="alert2">
+       <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+       <strong>{{ message }}</strong>
+     </div>
+    {% endfor %}
+   {% endif %}
+   <form method="post" action="{% url 'logincheck' %}">
+    {% csrf_token %}
+    <div class="form-group">
+     <label>Username</label>
+     <input type="username" name="username" required=True class="form-control" />
+    </div>
+    <div class="form-group">
+     <label>Password</label>
+     <input type="password" name="password" required=True class="form-control" />
+    </div>
+    <div class="form-group">  
+        <input type="submit" name="login" class="btn btn-success" value="Login" />
+        <button type="button" name="register" class="btn btn-primary"><a href="/requestdata"><font color=white>Register</font></a></button>
+    </div>
+   </form>
+  </div>
+ </body>
+</html>

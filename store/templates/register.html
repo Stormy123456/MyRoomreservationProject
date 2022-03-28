@@ -1,0 +1,86 @@
+{% extends 'regis_layouts.html' %}
+{% load static %}
+
+{% block content %}
+<script type="text/javascript">
+    function Preview(ele){
+        $('#img').attr('src', ele.value);
+        if (ele.files && ele.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img').attr('src', e.target.result);
+            }
+        reader.readAsDataURL(ele.files[0]);
+        }
+    }
+</script>
+    <br>
+    {% if messages %}
+        {% for message in messages %}
+          <div class="alert2">
+            <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+    {% endif %}
+    <br>
+    <div class="table-responsive">
+        <h2>ข้อมูลผู้ใช้งาน</h2>
+        <form action="{% url 'registerNewdata' %}" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="col-sm-6">
+                <label for="name">Username</label>
+                <input type="text" class="form-control" name="user_username" id="user_username"  pattern="[0-9-A-Za-z]{1,}" placeholder="Username" maxlength="20" required=True>
+            </div>
+            <div class="col-sm-6">
+                <label for="name">Password</label>
+                <input type="password" class="form-control" name="user_password" id="user_password"  pattern="[0-9-A-Za-z]{1,}" placeholder="Password" maxlength="20" required=True>
+            </div>
+            <br>
+            <div class="col-sm-6">
+                <img id="img" style="width: 120px; height: 140px;"/>
+            </div>
+            <div class="col-sm-6">
+                <label for="image">รูป</label>
+                <input type="file" class="form-control"  name="user_image" id="user_image" OnChange="Preview(this)" accept="image/x-png,image/glf,image/jpeg" required=True>
+                <img id="blah" src="{{data.user_image.url}}" class="img-thumbnail" />
+            </div>
+            <div class="col-sm-6">
+                <label for="name">คำนำหน้า</label>
+                <input type="text" class="form-control" name="user_prefix" id="user_prefix"  readonly  value={{user_prefix}}>
+            </div>
+            <div class="col-sm-6">
+                <label for="name">ชื่อ</label>
+                <input type="text" class="form-control" name="user_firstname" id="user_firstname"  readonly value={{user_firstname}}>
+            </div>
+            <div class="col-sm-6">
+                <label for="name">นามสกุล</label>
+                <input type="text" class="form-control" name="user_lastname" id="user_lastname"  maxlength="20"  readonly value={{user_lastname}}>
+            </div>
+            <div class="col-sm-6">
+                <label for="name">วันเกิด</label>
+                <input type="date" class="form-control" name="user_bdate" id="user_bdate" readonly value="{{user_bdate}}">
+            </div>
+            <div class="col-sm-6">
+                <label for="name">ประเภทผู้ใช้</label>
+                <input type="text" class="form-control" name="user_type" id="user_type"  maxlength="20"  readonly value={{user_type}} >
+            </div>
+            <div class="col-sm-6">
+                <label for="name">รหัสประจำตัวประชาชน</label>
+                <input type="text" class="form-control" name="user_identification_code" id="user_identification_code"  readonly value={{user_identification}}>
+            </div>
+            <div class="col-sm-6">
+                <label for="name">รหัสประจำตัวของมหาลัย</label>
+                <input type="text" class="form-control" name="user_university_code" id="user_university_code"  readonly value={{user_university}} >
+            </div>
+            <br>
+            <button type="submit" name="submit" class="btn btn-success">ตกลง</button>
+            <button type="button" class="btn btn-danger"><a href="/"><font color=white>ยกเลิก</font></a></button>
+            <br>
+            -----------------------
+        </form>
+    </div>
+
+
+
+{% endblock %}

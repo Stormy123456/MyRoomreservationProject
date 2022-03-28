@@ -1,0 +1,118 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  background-color: #f1f1f1;
+}
+</style>
+</head>
+<body>
+<div class="card">
+<div id="div3">
+    <h1>ประวัติ LOG</h1>
+</div>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search.." title="Type in a name">
+
+<table id="myTable">
+  <tr class="header">
+    <th style="width:10%;">id</th>
+    <th style="width:20%;">รหัสผู้ใช้</th>
+    <th style="width:20%;">วันที่</th>
+    <th style="width:20%;">วันที่เวลา</th>
+    <th style="width:40%;">ลายละเอียด</th>
+  </tr>
+
+    {% for data in logdata %}
+    <tr>
+      <td>{{data.id}}</td>
+      <td>{{data.userid}}</td>
+      <td>{{data.date}}</td>
+      <td>{{data.time}}</td>
+      <td>{{data.detail}}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+</div>
+<script>
+    function myFunction() {
+      var input, filter, table, tr, td1 , td2 , td3 , td4 , td5 , txtValue , txtValue2 , txtValue3 , txtValue4 , txtValue5;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td1 = tr[i].getElementsByTagName("td")[0];
+        td2 = tr[i].getElementsByTagName("td")[1];
+        td3 = tr[i].getElementsByTagName("td")[2];
+        td4 = tr[i].getElementsByTagName("td")[3];
+        td5 = tr[i].getElementsByTagName("td")[4];
+        if (td1) {
+          txtValue = td1.textContent || td1.innerText;
+          txtValue2 = td2.textContent || td2.innerText;
+          txtValue3 = td3.textContent || td3.innerText;
+          txtValue4 = td4.textContent || td4.innerText;
+          txtValue5 = td5.textContent || td5.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } 
+          else if (txtValue2.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } 
+          else if (txtValue3.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } 
+          else if (txtValue4.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } 
+          else if (txtValue5.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } 
+          else {
+            tr[i].style.display = "none";
+          }
+        } 
+        
+      }
+    }
+</script>
+
+</body>
+</html>
+{% endblock %}

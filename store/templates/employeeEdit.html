@@ -1,0 +1,86 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+<script type="text/javascript">
+    function Preview(ele){
+        $('#img').attr('src', ele.value);
+        if (ele.files && ele.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img').attr('src', e.target.result);
+            }
+        reader.readAsDataURL(ele.files[0]);
+        }
+    }
+</script>
+    <br>
+    <div id="content">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert2">
+            <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+      </div>
+    <div class="table-responsive">
+        <h2>แก้ไขข้อมูลพนักงาน</h2>
+        {% for data in result %}
+        <form action="{% url 'employeeUpdate' %}" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <input type="hidden" value="{{data.id}}" name="id">
+            <div class="col-sm-6">
+                <label for="name">Username</label>
+                <input type="text" class="form-control" name="emp_username" id="emp_username" pattern="[0-9-A-Za-z]{1,}" value={{data.emp_username}} maxlength="20" required=True placeholder="Username">
+            </div>
+            <div class="col-sm-6">
+                <label for="name">Password</label>
+                <input type="password" class="form-control" name="emp_password" id="emp_password" pattern="[0-9-A-Za-z]{1,}"  value={{data.emp_password}} maxlength="20" required=True placeholder="Password">
+            </div>
+            <div class="col-sm-6">
+                <label for="name">คำนำหน้า</label>
+                <select class="form-control" name="emp_prefix" id="emp_prefix" required=True>
+                 <option value="{{data.emp_prefix}}">{{data.emp_prefix}}</option>
+                 <option value="นาย">นาย</option>
+                 <option value="นาง">นาง</option>
+                 <option value="นางสาว">นางสาว</option>
+                 </select>
+            </div>
+            <div class="col-sm-6">
+                <label for="name">ชื่อ</label>
+                <input type="text" class="form-control" name="emp_fname" id="emp_fname" placeholder="ชื่อจริง" value={{data.emp_fname}} maxlength="20" required=True>
+            </div>
+            <div class="col-sm-6">
+                <label for="name">นามสกุล</label>
+                <input type="text" class="form-control" name="emp_lname" id="emp_lname" placeholder="นามสกุล" value={{data.emp_lname}} maxlength="20" required=True>
+            </div>
+            <div class="col-sm-6">
+                <label for="name">รหัสประจำตัวประชาชน</label>
+                <input type="text" class="form-control" name="emp_identification_code" id="emp_identification_code" placeholder="รหัสประจำตัวประชาชน" minlength="13" maxlength="13" pattern="[0-9]{1,}" value={{data.emp_identification_code}} required=True>
+            </div>
+            <div class="col-sm-6">
+                <label for="name">วัน/เดือน/ปีเกิด</label>
+                <input type="date" class="form-control" name="emp_bdate" id="emp_bdate" value="{{data.emp_bdate|date:'Y-m-d'}}" required=True>
+            </div>
+            <div class="col-sm-6">
+                <label for="image">รูปที่เลือก</label><br>
+                <img id="img" src="{{data.emp_image.url}}" style="width: 120px; height: 140px;"/>
+            </div>
+            <div class="col-sm-6">
+                <label for="image">รูป</label>
+                <input type="file" class="form-control"  name="emp_image" id="emp_image" OnChange="Preview(this)" accept="image/x-png,image/glf,image/jpeg">
+                <img id="blah"  class="img-thumbnail" />
+            </div>
+            <br>
+            <button type="submit" name="submit" class="btn btn-success">แก้ไข</button>
+            <button type="button" class="btn btn-danger"><a href="/employeeBoard"><font color=white>ยกเลิก</font></a></button>
+            <br>
+            -----------------------
+        </form>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

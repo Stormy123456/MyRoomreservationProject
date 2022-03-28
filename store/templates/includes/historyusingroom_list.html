@@ -1,0 +1,20 @@
+{% for product in products %}
+    <tr>
+    <td>{{product.id}}</td>
+    <td>{{product.his_rev_id}}</td>
+    <td>{{product.his_rev_date}}</td>
+    <td>{{product.his_checkin}}</td>
+    <td>{{product.his_checkout}}</td>
+    <td style="width: 150px">
+    <button type="button"
+            class="btn btn-warning btn-sm js-update-product"
+            data-url="{% url 'roomhistoryviews' product.id %}">
+        <span class="glyphicon glyphicon-pencil"></span> View
+    </button>
+    </td>
+  </tr>
+{% empty %}
+  <tr>
+    <td colspan="8" class="text-center bg-warning">No data</td>
+  </tr>
+{% endfor %}

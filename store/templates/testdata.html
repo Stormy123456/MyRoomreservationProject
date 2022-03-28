@@ -1,0 +1,42 @@
+{% extends 'userlayouts.html' %}
+{% load static %}
+{% load filter %}
+
+{% block content %}
+<br>
+<style>
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+
+
+<div id="content">
+  {% if messages %}
+  {% for message in messages %}
+    <div class="alert">
+      <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+      <strong>{{ message }}</strong>
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>
+<div class="card">
+
+{% for data in reservationdata %}
+  <h1> {{data.rev_roomid}} </h1>
+{% endfor %}
+
+
+
+
+
+
+
+
+</div>
+{% endblock %}
+
+

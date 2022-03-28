@@ -1,0 +1,64 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+<br>
+<div id="content">
+  {% if messages %}
+  {% for message in messages %}
+    <div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+      <strong>{{ message }}</strong>
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>
+<h1>จัดการข้อมูลคณะ</h1>
+<div class="table-responsive">
+  <a href="/facultyAdd" class="btn btn-success">เพิ่มข้อมูลคณะ</a>
+</div>
+<form action="" method="get">
+  <div class="form-group">
+    <input type="text"  name="action" id="action" placeholder="ค้นหา">
+    <button type="submit" name="submit" class="btn btn-dark"><i class="fa fa-search"></i></button>
+  </div>
+</form>
+{% if not facdata %}
+<div class="alert-danger" role="alert">
+  <p>ไม่มีข้อมูลคณะ</p>
+</div>
+{% else %}
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">ชื่อ</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for data in facdata %}
+    <tr>
+      <th scope="row">{{data.id}}</th>
+      <td>{{data.fac_name}}</td>
+      <td>
+        <form action="{% url 'facultyEdit' %}" method="get">
+          <input type="hidden" value="{{data.id}}" name="id">
+          <button type="submit" class="btn btn-success">Edit</button>
+        </form>
+      </td>
+      <td>
+        <form action="{% url 'facultyDelete' %}" method="get">
+          <input type="hidden" value="{{data.id}}" name="id">
+          <button type="submit" class="btn btn-danger" onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่ ?')">Delete</button>
+        </form>
+      </td>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+{% endblock %}
+
+
+

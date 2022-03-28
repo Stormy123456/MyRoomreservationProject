@@ -1,0 +1,85 @@
+{% extends 'userlayouts.html' %}
+{% load static %}
+{% load filter %}
+
+{% block content %}
+<br>
+<style>
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+
+  <head>
+    <meta charset="utf-8" />
+    <link href="{% static 'css/main.min.css' %}" rel='stylesheet' />
+    <script src="{% static 'js/main.min.js' %}"></script>
+    <script src="{% static 'js/locales-all.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/tooltip.min.js' %}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          // headerToolbar: {
+          //   center: 'dayGridMonth,timeGridWeek,timeGridDay',
+          // },
+          initialView: 'timeGridWeek',
+          // displayEventEnd: true,
+          eventTimeFormat: {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          },
+          eventClick: function(info) {
+            var s = info.event.extendedProps.description;
+            alert(s);
+          },
+          events: [
+            {% for data in reserve %}
+              {% for item in round|where_id:data.rev_num %}
+                {
+                  title: '{{data.id}} - {{data.rev_roomid}}',
+                  description: ' title: {{data.id}} - {{data.rev_roomid}}\n id: {{data.id}}\n user: {{data.rev_user}}\n room: {{item.room_id}}\n rev_num: {{data.rev_num}}',
+                  start: '{{data.rev_date|date:"Y-m-d"}}T{{item.room_start|date:"H:i:s"}}',
+                  end:   '{{data.rev_date|date:"Y-m-d"}}T{{item.room_stop|date:"H:i:s"}}',
+                  
+                  url: '',
+                },
+              {% endfor %}
+            {% endfor %}
+          ],
+        },);
+        calendar.render();
+      });
+    </script>
+  </head>
+
+<div id="content">
+  {% if messages %}
+  {% for message in messages %}
+    <div class="alert">
+      <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+      <strong>{{ message }}</strong>
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>
+<div class="card">
+{% for data in userdata %}
+    <div id="div3">
+      <h1>สวัสดีคุณ {{data.user_fname}} {{data.user_lname}}</h1>
+      <p id="p1">ยินดีต้อนรับสู่หน้าเว็ปการจอง</p>
+    </div>
+    <h2>รายการจอง</h2>
+    <div id='calendar'></div>
+    
+    <br>
+{% endfor %}
+  <!-- <a class="button3 button43" href="/products" style="text-decoration:none">Profile</a> -->
+</div>
+{% endblock %}
+
+

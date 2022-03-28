@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>    
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    
+      <br><br>
+      <center>
+        
+        <button type="button" class="btn btn-outline-info" id="on4"onclick='Click()'>ลายนิ้วมือ 1</button><br>
+        
+    <form action="{% url 'addfinger' %}" method="POST">
+        {% csrf_token %}
+        <textarea type="text" class="form-control" id="chh" rows="10"  name="finger1" style="width: 50%;"></textarea><br>
+        <br></br>
+        <!-- <textarea type="text" class="form-control" id="ch2" rows="10"  name="finger2" style="width: 50%;"></textarea><br> -->
+        <!-- <br></br>
+        <label for=""  >Charater1-2 </label><span style="color: #FEAE51" id="ch1_2"><b> ค่า1</b></span>
+        <br></br>
+        <label for=""  >Charater2-2 </label><span style="color: #FEAE51" id="ch2_2"><b> ค่า2</b></span>
+        <br></br>
+        
+        <br></br>
+        <label for=""  >Charater1-3 </label><span style="color: #FEAE51" id="ch1_3"><b> ค่า1</b></span>
+        <br></br>
+        <label for=""  >Charater2-3 </label><span style="color: #FEAE51" id="ch2_3"><b> ค่า2</b></span>
+        <br></br>
+        <button id="on6"onclick='Click3()'>บันทึกลายนิ้วมือ 3</button><br> -->
+        <br>
+        <input type="submit" class="btn btn-success" value="บันทึกลง Database">
+    </center>
+    </form>
+
+  </body>
+</html>
+<script src="mqttws31.js" type="text/javascript"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+  // Create a client instance
+  client = new Paho.MQTT.Client("soldier.cloudmqtt.com", 33682,"myweb");
+  client2 = new Paho.MQTT.Client("soldier.cloudmqtt.com", 33682,"myweb2");
+  client3 = new Paho.MQTT.Client("soldier.cloudmqtt.com", 33682,"myweb3");
+  //Example client = new Paho.MQTT.Client("m11.cloudmqtt.com", 32903, "web_" + parseInt(Math.random() * 100, 10));
+
+  // set callback handlers
+  client.onConnectionLost = onConnectionLost;
+  client.onMessageArrived = onMessageArrived;
+  client2.onConnectionLost = onConnectionLost;
+  client2.onMessageArrived = onMessageArrived2;
+  client3.onConnectionLost = onConnectionLost;
+  client3.onMessageArrived = onMessageArrived3;
+  var options = {
+    useSSL: true,
+    userName: "svhvdbfu",
+    password: "kyYZOemlFfeZ",
+    onSuccess:onConnect,
+    onFailure:doFail
+  }
+   var options2 = {
+    useSSL: true,
+    userName: "svhvdbfu",
+    password: "kyYZOemlFfeZ",
+    onSuccess:onConnect2,
+    onFailure:doFail
+  }
+    var options3 = {
+    useSSL: true,
+    userName: "svhvdbfu",
+    password: "kyYZOemlFfeZ",
+    onSuccess:onConnect3,
+    onFailure:doFail
+  }
+
+
+  // connect the client
+  client.connect(options);
+  client2.connect(options2);
+  client3.connect(options3);
+  // called when the client connects
+  function onConnect() {
+    // Once a connection has been made, make a subscription and send a message.
+    console.log("onConnect");
+    client.subscribe("fingerreceive1");
+    message = new Paho.MQTT.Message("Hello CloudMQTT");
+    //message.destinationName = "finger";
+    //client.send(message);
+  }
+  function onConnect2() {
+    // Once a connection has been made, make a subscription and send a message.
+    console.log("onConnect");
+    client2.subscribe("fingerreceive2");
+    message = new Paho.MQTT.Message("Hello CloudMQTT");
+    //message.destinationName = "finger";
+    //client.send(message);
+  }
+    function onConnect3() {
+    // Once a connection has been made, make a subscription and send a message.
+    console.log("onConnect");
+    client3.subscribe("fingerreceive3");
+    message = new Paho.MQTT.Message("Hello CloudMQTT");
+    //message.destinationName = "finger";
+    //client.send(message);
+  }
+
+  function doFail(e){
+    console.log(e);
+  }
+
+  // called when the client loses its connection
+  function onConnectionLost(responseObject) {
+    if (responseObject.errorCode !== 0) {
+      console.log("onConnectionLost:"+responseObject.errorMessage);
+    }
+  }
+
+  // called when a message arrives
+  function onMessageArrived(message) {
+    datain = message.payloadString; //test
+    console.log(datain);
+    data = datain.split("/");
+    charac1 = data[0];
+    charac2 = data[1];
+    chh = charac1+"/"+charac2;
+    console.log(chh);
+    // document.getElementById("ch1").value = charac1;
+    // document.getElementById("ch2").value = charac2;
+    document.getElementById("chh").value = chh;
+  }
+  function onMessageArrived2(message) {
+    datain2 = message.payloadString; //test
+    data2 = datain2.split("/");
+    charac1_2 = data2[0];
+    charac2_2 = data2[1];
+    document.getElementById("ch1_2").innerHTML = charac1_2;
+    document.getElementById("ch2_2").innerHTML = charac2_2;
+   
+  }
+    function onMessageArrived3(message) {
+    datain3 = message.payloadString; //test
+    data3 = datain3.split("/");
+    charac1_3 = data3[0];
+    charac2_3 = data3[1];
+    document.getElementById("ch1_3").innerHTML = charac1_3;
+    document.getElementById("ch2_3").innerHTML = charac2_3;
+   
+  }
+  function send(msg){
+	  message = new Paho.MQTT.Message(msg);
+    message.destinationName = "finger";
+    client.send(message); 
+  }
+
+</script>
+<script>
+  
+  function Click(){
+    send("Startfinger1");
+  }
+  function Click2(){
+    send("Startfinger2");
+  }
+  function Click3(){
+    send("Startfinger3");
+  }
+</script>

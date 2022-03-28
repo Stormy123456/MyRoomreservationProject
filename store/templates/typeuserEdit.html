@@ -1,0 +1,35 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+    <br>
+    <div id="content">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert2">
+            <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+      </div>
+    <div class="table-responsive">
+        {% for data in result %}
+        <br>
+        <h2>เพิ่มประเภทผู้ใช้งาน</h2>
+        <form action="{% url 'typeuserUpdate' %}" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <input type="hidden" value="{{data.id}}" name="id">
+            <div class="col-sm-6">
+                <label for="name">ชื่อประเภท</label>
+                <input type="text" class="form-control" name="typ_name" id="typ_name" placeholder="ชื่อประเภท" value={{data.typ_name}} maxlength="20" required=True>
+            </div>
+            <br>
+            <button type="submit" name="submit" class="btn btn-success">ตกลง</button>
+            <button type="button" class="btn btn-danger"><a href="/typeuserBoard"><font color=white>ยกเลิก</font></a></button>
+            <br>
+            -----------------------
+        </form>
+        {% endfor %}
+    </div>
+{% endblock %}

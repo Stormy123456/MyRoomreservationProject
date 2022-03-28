@@ -1,0 +1,45 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+    <br>
+    <div id="content">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert2">
+            <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+      </div>
+    <div class="table-responsive">
+        <br>
+        <h2>เพิ่มบทลงโทษผู้ใช้งาน</h2>
+        <form action="{% url 'punishmentAddnewdata' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-sm-6">
+                <label for="name">กรอกรายละเอียด</label>
+                <textarea name="pnm_details" id="pnm_details" rows="4" placeholder="รายละเอียด" maxlength="50" cols="50" required=True></textarea>
+                
+            </div>
+            <br>
+            <div class="col-sm-6">
+                <label for="name">จำนวนการทำผิดที่จะลงโทษแบบอัตโนมัต</label>
+                <input type="number" id="pnm_wrongdoing" name="pnm_wrongdoing" min="0" max="999" required=True> 
+            </div>
+            <label><font color=red>* หากใส่เป็น 0 จะเป็นตัวเลือกการแบนที่แอดมินเลือกแบนผู้ใช้ด้วยตัวเอง ไม่ใช่การแบนแบบอัตโนมัต</font></label>
+            <br>
+            <br>
+            <div class="col-sm-6">
+                <label for="name">จำนวนวันในการแบน</label>
+                <input type="number" id="pnm_bandays" name="pnm_bandays" min="1" max="999" required=True>
+            </div>
+            <br>
+            <button type="submit" name="submit" class="btn btn-success">ตกลง</button>
+            <button type="button" class="btn btn-danger"><a href="/punishmentBoard"><font color=white>ยกเลิก</font></a></button>
+            <br>
+            -----------------------
+        </form>
+    </div>
+{% endblock %}

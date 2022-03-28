@@ -1,0 +1,39 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+    <br>
+    <div id="content">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert2">
+            <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+      </div>
+    <div class="table-responsive">
+        <br>
+        <h2>แก้ไขข้อมูลสาขา</h2>
+        {% for data in result %}
+        <form action="{% url 'majorUpdate' %}" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <input type="hidden" value="{{data.id}}" name="id">
+            <!-- <div class="col-sm-6">
+                <label for="name">คณะ</label>
+                <input type="text" class="form-control" name="mjr_name_faculty" id="mjr_name_faculty" placeholder="ชื่อสาขา" maxlength="20" required=True>
+            </div> -->
+            <div class="col-sm-6">
+                <label for="name">ชื่อสาขา</label>
+                <input type="text" class="form-control" name="mjr_name" id="mjr_name" placeholder="ชื่อสาขา" value="{{data.mjr_name}}" maxlength="20" required=True>
+            </div>
+            <br>
+            <button type="submit" name="submit" class="btn btn-success">ตกลง</button>
+            <button type="button" class="btn btn-danger"><a href="/majorBoard"><font color=white>ยกเลิก</font></a></button>
+            <br>
+            -----------------------
+        </form>
+        {% endfor %}
+    </div>
+{% endblock %}

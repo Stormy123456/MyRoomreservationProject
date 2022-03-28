@@ -1,0 +1,58 @@
+{% extends 'layouts.html' %}
+{% load static %}
+{% load filter %}
+
+{% block content %}
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link href="{% static 'css/main.min.css' %}" rel='stylesheet' />
+    <script src="{% static 'js/main.min.js' %}"></script>
+    <script src="{% static 'js/locales-all.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/tooltip.min.js' %}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          headerToolbar: {
+            center: 'dayGridMonth,timeGridWeek,timeGridDay',
+          },
+          initialView: 'timeGridDay',
+          // displayEventEnd: true,
+          eventTimeFormat: {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          },
+          eventClick: function(info) {
+            var s = info.event.extendedProps.description;
+            alert(s);
+          },
+          events: [
+            {% for data in reserve %}
+              {% for item in round|where_id:data.rev_num %}
+                {
+                  title: '{{data.id}} - {{data.rev_roomid}}',
+                  description: ' title: {{data.id}} - {{data.rev_roomid}}\n id: {{data.id}}\n user: {{data.rev_user}}\n room: {{item.room_id}}\n rev_num: {{data.rev_num}}',
+                  start: '{{data.rev_date|date:"Y-m-d"}}T{{item.room_start|date:"H:i:s"}}',
+                  end:   '{{data.rev_date|date:"Y-m-d"}}T{{item.room_stop|date:"H:i:s"}}',
+                  
+                  url: '',
+                },
+              {% endfor %}
+            {% endfor %}
+          ],
+        },);
+        calendar.render();
+      });
+    </script>
+  </head>
+  </head>
+  <body>
+    <br>
+    <div id='calendar'></div>
+  </body>
+  </html>
+    
+{% endblock %}

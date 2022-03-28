@@ -1,0 +1,17 @@
+{% load widget_tweaks %}
+ 
+
+  
+<table id="myTable">
+  <tr class="header">
+    <th style="width:10%;">ชื่อผู้ใช้</th>
+    <th style="width:20%;">เวลาที่สแกนนิ้ว</th>
+ 
+  </tr>
+
+  {% for field in form %}
+    <td>{% render_field field class="form-control" readonly="true" %}</td>
+  {% endfor %}
+
+</table>
+

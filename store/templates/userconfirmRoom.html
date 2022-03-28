@@ -1,0 +1,39 @@
+{% extends 'userlayouts.html' %}
+{% load static %}
+
+{% block content %}
+    <br>
+    <div id="content">
+      {% if messages %}
+      {% for message in messages %}
+        <div class="alert2">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+          <strong>{{ message }}</strong>
+        </div>
+      {% endfor %}
+      {% endif %}
+      <br> 
+    </div>
+        <center>
+        <br>
+        <h2>ยืนยันลายนิ้วมือ</h2>
+        <h4>เลือกห้องที่จะทำการยืนยันลายนิ้วมือ</h4>
+        <form action="{% url 'userconfirmRoomSelected' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col-sm-6">
+            <select class="form-control" name="selectrooms" id="btn_room" required=True>
+                <option disabled selected="true">---เลือกห้อง---</option>
+                {% for data in roombutton %}
+                        <option value="{{data.rom_name}}">{{data.rom_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+        <button type="submit" name="submit" class="btn btn-success">ตกลง</button>
+        <button type="button" class="btn btn-danger"><a href="/userindex"><font color=white>ยกเลิก</font></a></button>
+        <br>
+        -----------------------
+        </form>
+        </center>
+    </div>
+{% endblock %}

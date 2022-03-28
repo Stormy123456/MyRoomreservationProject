@@ -1,0 +1,173 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+
+{% block content %}
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#myTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  background-color: #f1f1f1;
+}
+
+.newbutton {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.newbutton2 {background-color: #008CBA;} /* Blue */
+</style>
+</head>
+<body>
+<div class="card">
+<div id="div3">
+    <h1>ประวัติการใช้ห้อง</h1>
+</div>
+<input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search.." title="Type in a name">
+
+<table class="table" id="myTable">
+  <thead>
+    <tr class="header">
+      <th style="width:10%;">id</th>
+      <th style="width:20%;">ห้อง</th>
+      <th style="width:20%;">รหัสการจอง</th>
+      <th style="width:20%;">วันที่ใช้ห้อง</th>
+      <th style="width:20%;">เวลาเข้าใช้</th>
+      <th style="width:40%;">เวลาออก</th>
+      <th style="text-align:center">ดูประวัติ</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in hisdata %}
+    <tr>
+    <td>{{product.id}}</td>
+    <td>
+      {% for data in reservationdata %}
+        {% if product.his_rev_id == data.id %}
+          {% for data2 in roomdata %}
+            {% if data.rev_roomid == data2.id %}
+              {{data2.rom_name}}
+            {% endif %}
+          {% endfor %} 
+        {% endif %}
+      {% endfor %}    
+    </td>
+    <td>{{product.his_rev_id}}</td>
+    <td>{{product.his_rev_date}}</td>
+    <td>{{product.his_checkin}}</td>
+    <td>{{product.his_checkout}}</td>
+    <td>
+      <form action="{% url 'ShowhistoryUsingroom' %}" method="get">
+        <input type="hidden" value="{{product.id}}" name="id">
+        <button type="submit" class="newbutton newbutton2" onclick="displayData() ">View</button>
+      </form>
+    </td>
+    
+  </tr>
+{% endfor %}
+<div class="container">
+  <br><br>
+  <div class="card" id="mycard">
+  <p id="note" style="text-align:center">ท่านได้สมัครรับการส่งข้อความผ่านไลน์แล้ว กรุณากดปุ่ม"ตกลง" เพื่อบันทึกข้อมูลการส่งไลน์ของท่านสู่ระบบ</p>
+  </div>
+</div>
+</tbody>
+</table>
+</div>
+<script>
+    function myFunction() {
+      var input, filter, table, tr, td1 , td2 , td3 , td4 , td5 , txtValue , txtValue2 , txtValue3 , txtValue4 , txtValue5;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td1 = tr[i].getElementsByTagName("td")[0];
+        td2 = tr[i].getElementsByTagName("td")[1];
+        td3 = tr[i].getElementsByTagName("td")[2];
+        td4 = tr[i].getElementsByTagName("td")[3];
+        td5 = tr[i].getElementsByTagName("td")[4];
+        if (td1) {
+          txtValue = td1.textContent || td1.innerText;
+          txtValue2 = td2.textContent || td2.innerText;
+          txtValue3 = td3.textContent || td3.innerText;
+          txtValue4 = td4.textContent || td4.innerText;
+          txtValue5 = td5.textContent || td5.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } 
+          else if (txtValue2.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } 
+          else if (txtValue3.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } 
+          else if (txtValue4.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } 
+          else if (txtValue5.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } 
+          else {
+            tr[i].style.display = "none";
+          }
+        } 
+        
+      }
+    }
+</script>
+<script>
+  var x = 0;
+  document.getElementById("mycard").style.display = "none";
+  function displayData() {
+    x = 1;
+  }
+  if(x!=0){
+      document.getElementById("mycard").style.display = "";
+  }
+  
+</script> 
+</body>
+</html>
+{% endblock %}
+

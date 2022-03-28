@@ -1,0 +1,61 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+<br>
+<div id="content">
+  {% if messages %}
+  {% for message in messages %}
+    <div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+      <strong>{{ message }}</strong>
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>
+<div class="card">
+<h1>จัดการข้อมูลห้อง</h1>
+<!-- <div class="table-responsive">
+  <button href="/roomAdd" class=" btn-success">เพิ่มห้อง</button>
+</div> -->
+<div class="table-responsive">
+  <a href="/roomAdd" class="button button4" style="text-decoration:none">เพิ่มห้อง</a>
+</div>
+{% if not romdata %}
+<br><br><br><br>
+<div class="alert-danger" role="alert">
+  <p>ไม่มีข้อมูลห้อง</p>
+</div>
+{% else %}
+<table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">ชื่อห้อง</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for data in romdata %}
+    <tr>
+      <th scope="row">{{data.id}}</th>
+      <td>{{data.rom_name}}</td>
+      <td>
+        <form action="{% url 'roomEdit' %}" method="get">
+          <input type="hidden" value="{{data.id}}" name="id">
+          <button type="submit" class="btn btn-success">Edit</button>
+        </form>
+      </td>
+      <td>
+        <form action="{% url 'roomDelete' %}" method="get">
+          <input type="hidden" value="{{data.id}}" name="id">
+          <button type="submit" class="btn btn-danger" onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่ ?')">Delete</button>
+        </form>
+      </td>
+      {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+</div>
+{% endblock %}

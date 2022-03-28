@@ -1,0 +1,32 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+    <br>
+    <div id="content">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert2">
+            <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+      </div>
+    <div class="table-responsive">
+        <br>
+        <h2>เพิ่มข้อมูลคณะ</h2>
+        <form action="{% url 'facultyAddnewdata' %}" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="col-sm-6">
+                <label for="name">ชื่อคณะ</label>
+                <input type="text" class="form-control" name="fac_name" id="fac_name" placeholder="ชื่อคณะ" maxlength="20" required=True>
+            </div>
+            <br>
+            <button type="submit" name="submit" class="btn btn-success">ตกลง</button>
+            <button type="button" class="btn btn-danger"><a href="/facultyBoard"><font color=white>ยกเลิก</font></a></button>
+            <br>
+            -----------------------
+        </form>
+    </div>
+{% endblock %}

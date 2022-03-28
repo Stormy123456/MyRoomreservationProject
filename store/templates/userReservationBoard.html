@@ -1,0 +1,65 @@
+{% extends 'userlayouts.html' %}
+{% load static %}
+
+{% block content %}
+<br>
+<div id="content">
+  {% if messages %}
+  {% for message in messages %}
+    <div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+      <strong>{{ message }}</strong>
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>
+<div class="card">
+<h1>รายการจองของท่าน</h1>
+{% if not resdata %}
+<div class="alert-danger" role="alert">
+  <p>ไม่มีข้อมูลการจอง</p>
+</div>
+{% else %}
+<table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">รหัสการจอง</th>
+      <th scope="col">ห้อง</th>
+      <!-- <th scope="col">รอบ</th> -->
+      <th scope="col">วันที่</th>
+      <th scope="col">สถานะ</th>
+      <th scope="col">ยกเลิกการจอง</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for data in resdata %}
+    <tr>
+      <th scope="row">{{data.id}}</th>
+      <td>{{data.rev_roomid}}</td>
+      <td>{{data.rev_date}}</td>
+      
+
+        {% if data.rev_status == 0 %}
+        <td>รอกำหนดการ</td>
+        {% else %}
+        <td>ถึงกำหนดแล้ว</td>
+        {% endif %}
+
+
+        {% if data.rev_status == 0 %}
+        <td>
+          <form action="{% url 'userReservationDelete' %}" method="get">
+            <input type="hidden" value="{{data.id}}" name="id">
+            <button type="submit" class="btn btn-danger" onclick="return confirm('คุณต้องการยกเลิกการจองหรือไม่ ?')">ยกเลิก</button>
+          </form>
+        </td>
+        {% else %}
+        <td>ไม่สามารถยกเลิกรายการนี้ได้แล้ว</td>
+        {% endif %}
+      
+      {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+</div>
+{% endblock %}

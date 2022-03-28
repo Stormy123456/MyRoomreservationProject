@@ -1,0 +1,24 @@
+{% for product in products %}
+  <tr>
+    <td><img src="{{product.user_image.url}}" alt="" width="65px" height="65px"></td>
+    <td>{{ product.user_username }}</td>
+    <td>{{ product.user_password }}</td>
+    <td>
+      <form action="{% url 'userpicEdit' %}" method="get">
+        <input type="hidden" value="{{product.id}}" name="id">
+        <button type="submit" class="btn btn-success">Change Picture</button>
+      </form>
+    </td>
+    <td style="width: 150px">
+      <button type="button"
+              class="btn btn-warning btn-sm js-update-product"
+              data-url="{% url 'product_update' product.id %}">
+        <span class="glyphicon glyphicon-pencil"></span> Edit
+      </button>
+    </td>
+  </tr>
+{% empty %}
+  <tr>
+    <td colspan="8" class="text-center bg-warning">No data</td>
+  </tr>
+{% endfor %}

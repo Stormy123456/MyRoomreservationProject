@@ -1,0 +1,12 @@
+<form method="post" action="{% url 'roomhistoryviews' form.instance.pk %}" class="js-product-update-form">
+    {% csrf_token %}
+    <div class="modal-header">
+      <h4 class="modal-title">ข้อมูลการใช้ห้อง</h4>
+    </div>
+    <div class="modal-body">
+      {% include 'includes/viewhistory_form.html' %}
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">ปิด</button>
+    </div>
+  </form

@@ -1,0 +1,92 @@
+{% extends 'userlayouts.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+     
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  
+   <!--Websocket-->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+  
+</head>
+  <body>
+    <br>
+    <div id="content">
+      {% if messages %}
+      {% for message in messages %}
+        <div class="alert">
+          <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+          <strong>{{ message }}</strong>
+        </div>
+      {% endfor %}
+      {% endif %}
+    </div>
+    <div class="container" >
+      {% csrf_token %}
+      <br><br><br>
+      <h1>กรอก ID Line ของท่าน</h1>
+      <input type="text" class="form-control" name="user_id_line" id="user_id_line" value="" required=True><br>
+      <div class="text-center">
+        <button class="btn btn-success" onclick="Auth(); ">รับการแจ้งผ่าน LineNotify</button> 
+      </div>
+      <label for="" id="code_url"></label>
+      
+    </div>   
+    <form action="{% url 'userTokenAdd' %}" method="post" enctype="multipart/form-data" >
+      {% csrf_token %}
+      <div class="container">
+        <br><br>
+        <div class="card" id="mycard">
+        <p id="note" style="text-align:center">ท่านได้สมัครรับการส่งข้อความผ่านไลน์แล้ว กรุณากดปุ่ม"ตกลง" เพื่อบันทึกข้อมูลการส่งไลน์ของท่านสู่ระบบ</p>
+        <input type="text" class="form-control"name="code_url2" id="code_url2" value="" ><br>
+      <br>
+      <button type="submit" name="submit" id="mysubmit" class="btn btn-success">บันทึก</button>
+      <button type="button" class="btn btn-danger"><a href="/userToken"><font color=white>ยกเลิก</font></a></button>
+      </div>
+    </div>
+  </form>
+  </body>
+  <script>
+    function Auth() {
+        if (user_id_line.value.length == 0)
+        { 
+          alert("กรุณากรอกข้อมูล Line ของท่าน");  	
+        }  
+        var URL = 'https://notify-bot.line.me/oauth/authorize?';
+        URL += 'response_type=code';
+        URL += '&client_id=XO8DIZFf8qIb41yk7zCoSz';
+        URL += '&redirect_uri=http://localhost:8001/userToken';//ถ้า login แล้ว เลือกกลุ่มหรือตัวเอง ให้กลับมาหน้านี้
+        URL += '&scope=notify';
+        URL += '&state='+document.getElementById('user_id_line').value;//กำหนด  user หรือ อะไรก็ได้ที่สามารถบอกถึงว่าเป็น user ในระบบ
+        window.location.href = URL;
+    }
+  </script>   
+   <script>
+    let param = new URLSearchParams(window.location.search);
+    let code = param.get('code')
+    let id_line = param.get('state')
+    document.getElementById("code_url2").style.display = "none";
+    document.getElementById("mysubmit").style.display = "none";
+    document.getElementById("note").style.display = "none";
+    document.getElementById("mycard").style.display = "none";
+    if(code!=null){
+      document.getElementById('code_url2').value = code
+      document.getElementById("code_url2").style.display  = "none";
+      document.getElementById("mysubmit").style.display = "";
+      document.getElementById("note").style.display = "";
+      document.getElementById("mycard").style.display = ""; 
+    }
+    /*if(id_line!=null){
+      document.getElementById('id_line').value = id_line
+    }*/
+</script>
+</html>
+{% endblock %}

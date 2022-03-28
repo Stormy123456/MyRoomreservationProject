@@ -1,0 +1,3 @@
+[{"model": "store.employee", "pk": "EMP001", "fields": {"emp_username": "admin", "emp_password": "123", "emp_prefix": "นางสาว", "emp_fname": "Aurora", "emp_lname": "Tarara", "emp_identification_code": "2000000000111", "emp_bdate": "2020-12-16T00:00:00Z", "emp_image": "user_image/XzE2MDI3MTM3NDc_cEgQBoV.png", "emp_status_finger": false, "status_login": 1, "emp_finger1": null, "emp_finger2": null}}]
+
+

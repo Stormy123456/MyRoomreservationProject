@@ -1,0 +1,61 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+<script type="text/javascript">
+    function Preview(ele){
+        $('#img').attr('src', ele.value);
+        if (ele.files && ele.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img').attr('src', e.target.result);
+            }
+        reader.readAsDataURL(ele.files[0]);
+        }
+    }
+</script>
+    <br>
+    <div id="content">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert2">
+            <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+      </div>
+    <div class="table-responsive">
+        <h2>แก้ไขข้อมูลผู้ใช้งาน</h2>
+        {% for data in result %}
+        <form action="{% url 'userUpdate' %}" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <input type="hidden" value="{{data.id}}" name="id">
+            <div class="col-sm-6">
+                <label for="name">Username</label>
+                <input type="text" class="form-control" name="user_username" id="user_username" pattern="[0-9-A-Za-z]{1,}" value={{data.user_username}} maxlength="20" required=True placeholder="Username">
+            </div>
+            <div class="col-sm-6">
+                <label for="name">Password</label>
+                <input type="password" class="form-control" name="user_password" id="user_password" pattern="[0-9-A-Za-z]{1,}"  value={{data.user_password}} maxlength="20" required=True placeholder="Password">
+            </div>
+            <div class="col-sm-6">
+                <label for="image">รูปที่เลือก</label><br>
+                <img id="img" src="{{data.user_image.url}}" style="width: 120px; height: 140px;"/>
+            </div>
+            <div class="col-sm-6">
+                <label for="image">รูป</label>
+                <input type="file" class="form-control"  name="user_image" id="user_image" OnChange="Preview(this)" accept="image/x-png,image/glf,image/jpeg">
+                <img id="blah"  class="img-thumbnail" />
+            </div>
+            <br>
+            <button type="submit" name="submit" class="btn btn-success">แก้ไข</button>
+            <button type="button" class="btn btn-danger"><a href="/userBoard"><font color=white>ยกเลิก</font></a></button>
+            <br>
+            -----------------------
+        </form>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}

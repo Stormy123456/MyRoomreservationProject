@@ -1,0 +1,117 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+    <br>
+    <div id="content">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert2">
+            <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+      </div>
+    <br>
+    <div class="table-responsive">
+        <h2>เพิ่มห้องใหม่</h2>
+        <form action="{% url 'roomAddnewdata' %}" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="col-sm-6">
+                <label for="name">ชื่อห้อง</label>
+                <input type="text" class="form-control" name="rom_name" id="rom_name" placeholder="ชื่อห้อง" maxlength="20" required=True>
+            </div>
+
+            <!-- <div class="col-sm-6">
+              <label for="name">ประเภทผู้ใช้</label><br>
+                  {% for type in types %}
+                          <label for="name"><h6>{{type.typ_name}}</h6></label>
+                          <input type="checkbox" id="typeuser_id" name="typeuser_id[]"  value="{{type.id}}">
+                  {% endfor %}
+            </div> -->
+            
+            <!-- <div class="col-sm-6">
+                <label for="name">ประเภทผู้ใช้</label>
+                <select class="form-control" name="rom_user_type">
+                    {% for type in types %}
+                            <option value="{{type.id}}">{{type.typ_name}}</option>
+                    {% endfor %}
+                </select>
+            </div> -->
+
+            <div class="col-sm-6">
+                <label for="name">ชื่อ Topic</label>
+                <input type="text" class="form-control" name="rom_topic" id="rom_topic" placeholder="ชื่อ Topic" maxlength="20" required=True>
+            </div>
+            <br>
+            <div class="col-sm-6">
+              <label for="name">จำนวนคนที่ให้ใช้ห้อง</label>
+              <input type="number" id="rom_person" name="rom_person" min="1" max="999" required=True>
+            </div>
+            <br>
+            <h4>รอบที่ให้จอง</h4>
+            <th><label for="name"><font color=red>*เวลาแต่ละรอบต้องห่างกันอย่างน้อย 10 นาทีเพื่อเว้นช่วงการส่งข้อมูล</font></label></th>
+         <section>
+             <div class="panel panel-footer" >
+
+                 <table class="table table-bordered" bgcolor="white">
+                     <thead>
+                     <tr>
+                            <th><label for="name">เวลาเริ่มต้น</label></th>
+                            <th><label for="name">เวลาสิ้นสุด</label></th>
+                            <th><button type="button" class="btn btn-success addRow"><i class="glyphicon glyphicon-plus">Add</i></button></th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                      <tr>
+                            <td>
+                              <div class="col-sm-6">
+                              <input type="time" class="form-control" id="room_start" name="room_start[]" required>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="col-sm-6">
+                                <input type="time" class="form-control" id="room_stop" name="room_stop[]" required>
+                              </div>
+                            </td>      
+                            <td><button type="button" class="btn btn-danger remove"><i class="glyphicon glyphicon-remove">Delete</i></button></td>
+                      </tr>
+                    </tr>
+                     </tbody>
+                 </table>
+             </div>
+         </section>
+            <br>
+            <button type="submit" name="submit" class="btn btn-success">ตกลง</button>
+            <button type="button" class="btn btn-danger"><a href="/roomBoard"><font color=white>ยกเลิก</font></a></button>
+            <br>
+            -----------------------
+        </form>
+        <script>
+          $j('.addRow').on('click',function(){
+              addRow();
+          });
+          function addRow()
+          {
+              var tr='<tr>'+
+              '<td><div class="col-sm-6"><input type="time" class="form-control" id="room_start" name="room_start[]" required></div></td>'+
+              '<td><div class="col-sm-6"><input type="time" class="form-control" id="room_stop" name="room_stop[]" required></div></td>'+
+              '<td><button type="button" class="btn btn-danger remove"><i class="glyphicon glyphicon-remove">Delete</i></button></td>'+
+              '</tr>';
+              $('tbody').append(tr);
+          };
+          $j('.remove').live('click',function(){
+              var l=$('tbody tr').length;
+              if(l==1)
+              {
+      
+              }
+              else
+              {
+                  $(this).parent().parent().remove();
+              }
+          });
+          </script>
+    </div>
+{% endblock %}

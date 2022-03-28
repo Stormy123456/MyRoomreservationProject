@@ -1,0 +1,37 @@
+{% extends 'userlayouts.html' %}
+{% load static %}
+
+{% block content %}
+    <br>
+    <div id="content">
+      {% if messages %}
+      {% for message in messages %}
+        <div class="alert2">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+          <strong>{{ message }}</strong>
+        </div>
+      {% endfor %}
+      {% endif %}
+      <br> 
+    </div>
+        <center>
+        <br>
+        <h2>เพิ่ม Token</h2>
+        <form action="{% url 'employeeAddnewdata' %}" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="col-sm-6">
+                <label for="name">Username</label>
+                <input type="text" class="form-control" name="emp_username" id="emp_username" pattern="[0-9-A-Za-z]{1,}" placeholder="Username" maxlength="20" required=True>
+            </div>
+            <br>
+            <button type="submit" name="submit" class="btn btn-success">ตกลง</button>
+            <button type="button" class="btn btn-danger"><a href="/userindex"><font color=white>ยกเลิก</font></a></button>
+            <br>
+            -----------------------
+        </form>
+      
+        
+        </center>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'regis_layouts.html' %}
+{% load static %}
+
+{% block content %}
+<script type="text/javascript">
+    function Preview(ele){
+        $('#img').attr('src', ele.value);
+        if (ele.files && ele.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#img').attr('src', e.target.result);
+            }
+        reader.readAsDataURL(ele.files[0]);
+        }
+    }
+</script>
+    <br>
+    {% if messages %}
+        {% for message in messages %}
+          <div class="alert2">
+            <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+    {% endif %}
+    <div class="table-responsive">
+        <h2>กรอกรหัสนักศึกษาและรหัสของเว็ปสำนักทะเบียน</h2>
+        <form action="{% url 'register' %}" method="get">
+            {% csrf_token %}
+            <div class="col-sm-6">
+                <label for="name">รหัสประจำตัวของมหาลัย</label>
+                <input type="text" class="form-control" name="university_code" id="university_code" placeholder="รหัสประจำตัวของมหาลัย" minlength="10" maxlength="10" pattern="[0-9]{1,}" required=True>
+            </div>
+            <div class="col-sm-6">
+                <label for="name">รหัสผ่านของสำนักทะเบียน</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="รหัสผ่านของสำนักทะเบียน">
+            </div>
+            <br>
+            <button type="submit" name="submit" class="btn btn-success">ตกลง</button>
+            <button type="button" class="btn btn-danger"><a href="/"><font color=white>ยกเลิก</font></a></button>
+            <br>
+            -----------------------
+        </form>
+    </div>
+{% endblock %}

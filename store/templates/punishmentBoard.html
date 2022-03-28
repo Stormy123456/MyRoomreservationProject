@@ -1,0 +1,179 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+<!-- <style>
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  </style> -->
+  <style>
+    .onbutton1 {
+      background-color: #dbf10d; /* Green */
+      border: none;
+      color: white;
+      padding: 5px;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 3px 2px;
+      cursor: pointer;
+    }
+    .offbutton1 {
+      background-color: #0e140c; /* Green */
+      border: none;
+      color: white;
+      padding: 5px;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 3px 2px;
+      cursor: pointer;
+    }
+  
+    .button5 {border-radius: 50%;}
+    </style>
+<br>
+<div id="content">
+  {% if messages %}
+  {% for message in messages %}
+    <div class="alert">
+      <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+      <strong>{{ message }}</strong>
+    </div>
+  {% endfor %}
+  {% endif %}
+</div>
+<div class="card">
+<h1>จัดการบทลงโทษผู้ใช้งาน</h1>
+<div class="table-responsive">
+  <a href="/punishmentAdd" class="button button4" style="text-decoration:none">เพิ่มบทลงโทษ</a>
+</div>
+{% if not punishmentdata %}
+<br><br><br><br>
+<div class="alert-danger" role="alert">
+  <p>ไม่มีข้อมูลบทลงโทษผู้ใช้งาน</p>
+</div>
+{% else %}
+<table id="bootstrapdatatable" class="table table-striped table-bordered" width="100%">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">ลายละเอียด</th>
+      <th scope="col">จำนวนวันที่แบน</th>
+      <th scope="col">เปิด/ปิด</th>
+      <th scope="col">EDIT</th>
+      <th scope="col">DELETE</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for data in punishmentdata %}
+    <tr>
+      <td>{{data.id}}</td>
+      <td>{{data.pnm_details}}</td>
+      <td>{{data.pnm_bandays}}</td> 
+      <td>
+        {% if data.pnm_status == '0' %}
+        <label class="switch">
+          <form action="{% url 'punishmentToggleOff' %}" method="get">
+            <input type="hidden" value="{{data.id}}" name="id">
+            <button type="submit" class="onbutton1 button5" onclick="return confirm('คุณต้องการปิดใช้การบทลงโทษนี้หรือไม่ ?')">On</button>
+          </form>
+        </label>
+        {% else %}
+        <label class="switch">
+          <form action="{% url 'punishmentToggleOn' %}" method="get">
+            <input type="hidden" value="{{data.id}}" name="id">
+            <button type="submit" class="offbutton1 button5" onclick="return confirm('คุณต้องการเปิดใช้การบทลงโทษนี้หรือไม่ ?')">Off</button>
+          </form>
+        </label>
+        {% endif %}
+      </td>
+      <td>
+        <form action="{% url 'punishmentEdit' %}" method="get">
+          <input type="hidden" value="{{data.id}}" name="id">
+          <button type="submit" class="btn btn-success">Edit</button>
+        </form>
+      </td>
+      <td>
+        <form action="{% url 'punishmentDelete' %}" method="get">
+          <input type="hidden" value="{{data.id}}" name="id">
+          <button type="submit" class="btn btn-danger" onclick="return confirm('คุณต้องการลบข้อมูลหรือไม่ ?')">DELETE</button>
+        </form>
+      </td>
+      {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+

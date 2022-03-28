@@ -1,0 +1,64 @@
+{% extends 'layouts.html' %}
+{% load static %}
+
+{% block content %}
+<html>
+  <head><meta charset="utf-8" /></head>
+  <body>
+    <br>
+    <div id="content">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert2">
+            <span class="closebtn2" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>{{ message }}</strong>
+          </div>
+        {% endfor %}
+      {% endif %}
+      </div>
+    <br>
+    <h2>ยอดผู้ใช้ห้อง</h2>
+    <form action="{% url 'historySearch' %}" method="post" enctype="multipart/form-data">
+    <div>
+      {% csrf_token %}
+      <h1>{{check}}</h1>
+      <br>
+      <input type="hidden" name="alltime" value=0>
+      <div class="col-sm-6">
+        <label for="vehicle1">เลือกประวัติทั้งหมด</label>
+        <input type="checkbox" id="alltime" name="alltime" value=1>
+      </div>
+      <br>
+      <button type="button" onclick="myFunction()" >เลือกกราฟตามช่วงเวลา</button>
+      <div id="myDIV" style="display:none">
+      <div class="col-sm-6">
+        <label for="name">ตั้งแต่วันที่</label>
+        <input type="date" class="form-control" name="start">
+      </div>
+      <div class="col-sm-6">
+        <label for="name">จนถึงวันที่</label>
+        <input type="date" class="form-control" name="stop">
+      </div>
+      </div>
+      <br>
+      <br>
+      <button type="submit" name="submit" class="btn btn-success">ค้นหา</button>
+      <br>
+      </form>
+      <img src="data:image/png;base64, {{chart|safe}}" style="width:80%">
+            
+    </div>
+    <script>
+      function myFunction() {
+        var x = document.getElementById("myDIV");
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
+      }
+      </script>
+  </body>
+  </html>
+    
+{% endblock %}

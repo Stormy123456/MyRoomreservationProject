@@ -1,0 +1,45 @@
+{% extends 'userlayouts.html' %}
+{% load static %}
+
+{% block content %}
+    <br>
+    <div id="content">
+      {% if messages %}
+      {% for message in messages %}
+        <div class="alert2">
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+          <strong>{{ message }}</strong>
+        </div>
+      {% endfor %}
+      {% endif %}
+      <br> 
+    </div>
+        <center>
+        <br>
+        <h2>ยืนยันลายนิ้วมือ</h2>
+        <label for="name">ห้องที่คุณเลือกอยู่ขณะนี้</label> 
+        {% for data in roomdata %}
+          {{data.rom_name}}
+        {% endfor %}
+        <br><br>
+        <form action="{% url 'userAddconfirm' %}" method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+                <textarea readonly type="text" name="ip_client" class="form-control" >{{test_ip}} </textarea><br><br>
+                <input type="text" class="form-control" name="room_id" value="{{room_id}}" readonly><br>
+                <label for="name">ลายนิ้วมือของครั้งแรก</label>
+                <textarea readonly type="text" class="form-control" id="ch1" rows="6"  name="finger1" required=True style="width: 50%;" >{{finger1}}</textarea><br>
+                <br>
+                <button type="submit" name="btn_Click2" class="btn btn-outline-primary" id="on5" >ครั้งที่ 2</button><br><br>  
+                <textarea readonly type="text" class="form-control" id="ch2" rows="3"  name="finger2" required=True style="width: 50%;">{{finger2}}</textarea>
+                <br>
+                <button type="submit" name="submit" class="btn btn-success" onclick="Save_datafinger()" value="บันทึกลง Database">ตกลง</button>
+                <button type="button" class="btn btn-danger"><a href="/userindex"><font color=white>ยกเลิก</font></a></button>
+                <br>
+                -----------------------
+        </form>
+        </center>
+    </div>
+
+
+
+{% endblock %}
